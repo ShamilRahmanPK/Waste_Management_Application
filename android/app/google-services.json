@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "17146362117",
+    "project_id": "hksena-b7dad",
+    "storage_bucket": "hksena-b7dad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17146362117:android:5ebab44f26ec94fc351f6c",
+        "android_client_info": {
+          "package_name": "com.majlis.hksena"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh8UPKlaqt0p3p8lHuAa1BCvCR-7aPCaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
