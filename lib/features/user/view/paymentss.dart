@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hksena/features/user/view/homepage.dart';
 
 class Payment_success extends StatefulWidget {
   const Payment_success({super.key});
@@ -34,7 +35,7 @@ class _Payment_successState extends State<Payment_success> {
             SizedBox(height: 20,),
             InkWell(
               onTap: (){
-                
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
               },
               child: Container(
                 height: 50,

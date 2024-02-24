@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hksena/core/login.dart';
+import 'package:hksena/features/agents/view/agent_acount.dart';
+import 'package:hksena/features/agents/view/agent_payments.dart';
+import 'package:hksena/features/agents/view/collectingp.dart';
+import 'package:hksena/features/agents/view/message.dart';
 
 class Agents extends StatefulWidget {
   const Agents({super.key});
@@ -63,7 +68,11 @@ class _AgentsState extends State<Agents> {
                 height: 20,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Collecting_Points()));
+
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 15),
                   alignment: Alignment.centerLeft,
@@ -123,7 +132,11 @@ class _AgentsState extends State<Agents> {
                 height: 20,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Agent_payments()));
+                  
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 15),
                   alignment: Alignment.centerLeft,
@@ -143,7 +156,11 @@ class _AgentsState extends State<Agents> {
                 height: 20,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Message()));
+
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 15),
                   alignment: Alignment.centerLeft,
@@ -203,27 +220,11 @@ class _AgentsState extends State<Agents> {
                 height: 20,
               ),
               InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.only(left: 15),
-                  alignment: Alignment.centerLeft,
-                  height: 55,
-                  width: 352,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xff006937)),
-                  child: Text(
-                    "+ Add Agent/assign area",
-                    style:
-                    TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color: Colors.white ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              InkWell(
-                onTap: () {},
+                onTap: () {
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Agent_acount()));
+
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 15),
                   alignment: Alignment.centerLeft,
@@ -236,6 +237,56 @@ class _AgentsState extends State<Agents> {
                     "+ My Account",
                     style:
                     TextStyle(fontSize: 18, fontWeight: FontWeight.w400,color: Colors.white ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Confirm Logout"),
+                        content: Text("Are you sure you want to log out?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                          ),
+                          TextButton(
+                            child: Text("Logout"),
+                            onPressed: () {
+                              // Perform logout operation
+                              final route = MaterialPageRoute(builder: (context) => Login());
+                              Navigator.pushAndRemoveUntil(context, route, (route) => false);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 15),
+                  alignment: Alignment.centerLeft,
+                  height: 55,
+                  width: 352,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.red,
+                  ),
+                  child: Text(
+                    "+ Log Out",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

@@ -2,7 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hksena/features/admin/view/add_agent.dart';
 import 'package:hksena/features/user/view/add_bin.dart';
+import 'package:hksena/features/user/view/message.dart';
+import 'package:hksena/features/user/view/my_account.dart';
+import 'package:hksena/features/user/view/my_agent.dart';
 import 'package:hksena/features/user/view/request.dart';
 import 'package:hksena/features/user/view/user_payments.dart';
 
@@ -35,7 +39,8 @@ class _HomePageState extends State<HomePage> {
           title: Column(
             children: [
               SizedBox(height: 50,),
-              Text("Good Morning,${widget.data!['name']}!",style:
+              // ${widget.data!['name']}
+              Text("Good Morning,!",style:
               TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -87,7 +92,9 @@ class _HomePageState extends State<HomePage> {
                         child: Container(
                           height: 120,
                           width: 120,
-                          decoration: BoxDecoration(color: Color(0xff006937),borderRadius: BorderRadius.circular(120)),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assest/images/sent_request.png")),
+                              color: Color(0xff006937),borderRadius: BorderRadius.circular(120)),
                         ),
                       ),
                       SizedBox(height: 10,),
@@ -128,6 +135,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       InkWell(
                         onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>My_agent()));
 
                         },
                         child: Container(
@@ -177,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Request()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>My_acount()));
                         },
                         child: Container(
                           height: 120,
@@ -197,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Add_bin()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Message()));
                         },
                         child: Container(
                           height: 120,

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-class My_agent extends StatefulWidget {
-  const My_agent({super.key});
+class My_acount extends StatefulWidget {
+  const My_acount({super.key});
+
   @override
-  State<My_agent> createState() => _My_agentState();
+  State<My_acount> createState() => _My_acountState();
 }
 
-class _My_agentState extends State<My_agent> {
+class _My_acountState extends State<My_acount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +40,7 @@ class _My_agentState extends State<My_agent> {
                   children: [
                     Text("My Locality",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w500,color: Colors.white,letterSpacing: 1),),
                     SizedBox(
-                      height: 30,
+                      height: 50,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -65,57 +66,73 @@ class _My_agentState extends State<My_agent> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 550,
-                    padding: EdgeInsets.only(top: 20, right: 10, left: 10),
+                    padding: EdgeInsets.only(top: 20, right: 30, left: 30),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(50),
                             topRight: Radius.circular(50))),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Agent Details",
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 80,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assests/images/default_profie.png",
-                                height: 29,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "My Account",
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    "assests/images/default_profie.png",
+                                    height: 100,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    "Shamil Rahman PK",
+                                    style: TextStyle(fontSize: 20, color: Colors.black),
+                                  )
+                                ],
                               ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                "Shamil Rahman PK",
-                                style: TextStyle(fontSize: 18, color: Colors.black),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 20,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 50,
-                              ),
-                              Text(
-                                "New York,north street \n house no:3221 ",
-                                style: TextStyle(fontSize: 15, color: Colors.black),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            SizedBox(height: 20,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 80,
+                                ),
+                                Text(
+                                  "My Points:400",
+                                  style: TextStyle(fontSize: 20, color: Colors.black),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                SizedBox(height: 40,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Cards"),
+                    SizedBox(height: 40,),
+                    Text("My Points"),
+                    SizedBox(height: 40,),
+                    Text("Edit Acount"),
+                    SizedBox(height: 70,),
+                  ],
+                )],
                     ),
                   )),
               Positioned(
@@ -177,6 +194,6 @@ class _My_agentState extends State<My_agent> {
               )
             ],
           ),
-        ));
+        ));;
   }
 }

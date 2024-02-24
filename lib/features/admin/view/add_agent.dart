@@ -358,36 +358,39 @@ class _Add_agentState extends State<Add_agent> {
 
                       if(_regKey.currentState!.validate()){
 
-                        UserCredential user=await  FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-                        if(user!=null){
-                          FirebaseFirestore.instance.collection('login').doc(user.user!.uid).set(
-
-
-                              {
-                                'name':_nameController.text,
-                                'uid':user.user!.uid,
-                                'createdat':DateTime.now(),
-                                'status':1,
-                                'password':_passwordController.text,
-                                'usertype':"user"
-                              }
-
-
-                          ).then((value) {  FirebaseFirestore.instance.collection('houses').doc(user.user!.uid).set(
-
-
-                              {
-
-                                'name':_nameController.text,
-                                'uid':user.user!.uid,
-                                'createdat':DateTime.now(),
-                                'status':1,
-                                'password':_passwordController.text,
-                              }
-
-                          );});
-
-                        }
+                        _addAgent();
+                        // UserCredential user=await  FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                        // if(user!=null){
+                        //   FirebaseFirestore.instance.collection('login').doc(user.user!.uid).set(
+                        //
+                        //
+                        //       {
+                        //         'name':_nameController.text,
+                        //         'uid':user.user!.uid,
+                        //         'createdat':DateTime.now(),
+                        //         'status':1,
+                        //         'password':_passwordController.text,
+                        //         'usertype':"Agent"
+                        //       }
+                        //
+                        //
+                        //   ).then((value) {  FirebaseFirestore.instance.collection('Agent').doc(user.user!.uid).set(
+                        //
+                        //
+                        //       {
+                        //
+                        //         'name':_nameController.text,
+                        //         'uid':user.user!.uid,
+                        //         'createdat':DateTime.now(),
+                        //         'status':1,
+                        //         'password':_passwordController.text,
+                        //         'address':_homeAddress.text,
+                        //         'assignedArea': selectedItem,
+                        //       }
+                        //
+                        //   );});
+                        //
+                        // }
                       }
 
 
@@ -412,5 +415,58 @@ class _Add_agentState extends State<Add_agent> {
             ),
           )),
     );
+  }
+
+  _addAgent() async {
+    try {
+      UserCredential user = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+
+      if(user!=null){
+        FirebaseFirestore.instance.collection('login').doc(user.user!.uid).set(
+
+
+            {
+              'name':_nameController.text,
+              'email': user.user!.email,
+              'uid':user.user!.uid,
+              'createdat':DateTime.now(),
+              'status':1,
+              'password':_passwordController.text,
+              'usertype':"Agent"
+            }
+
+
+        ).then((value) {  FirebaseFirestore.instance.collection('Agent').doc(user.user!.uid).set(
+
+            {
+              'name':_nameController.text,
+              'userName':_userName,
+              'uid':user.user!.uid,
+              'createdat':DateTime.now(),
+              'status':1,
+              'password':_passwordController.text,
+              'address':_homeAddress.text,
+              'assignedArea': selectedItem,
+            }
+
+        );}
+
+        );
+
+      }
+      }
+      on FirebaseAuthException catch (e){
+      final error = splitError(e.toString());
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("$error")));
+    }
+    }
+
+
+  splitError(String e) {
+    String error = e.split("]")[1];
+    return error;
   }
 }

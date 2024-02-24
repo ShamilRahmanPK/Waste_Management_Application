@@ -24,6 +24,10 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
         debugShowCheckedModeBanner: false,
       theme: ThemeData(
+
+        textTheme: TextTheme(
+          displayLarge:TextStyle(color: Colors.black,fontSize: 22)
+        ),
         appBarTheme: AppBarTheme(
           iconTheme: IconThemeData(
             color: Colors.white

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hksena/features/user/view/homepage.dart';
 
 class Registration extends StatefulWidget {
   const Registration({super.key});
@@ -10,16 +11,21 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _homeAddress = TextEditingController();
+  TextEditingController _wardNumber = TextEditingController();
+  TextEditingController _phoneNumber = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+  TextEditingController _userName = TextEditingController();
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _passwordController = TextEditingController();
-    TextEditingController _nameController = TextEditingController();
-    TextEditingController _homeAddress = TextEditingController();
-    TextEditingController _wardNumber = TextEditingController();
-    TextEditingController _phoneNumber = TextEditingController();
-    TextEditingController _locationController = TextEditingController();
-    TextEditingController _userName = TextEditingController();
 
     final _regKey=GlobalKey<FormState>();
     return Scaffold(
@@ -308,36 +314,7 @@ class _RegistrationState extends State<Registration> {
 
                    if(_regKey.currentState!.validate()){
 
-                     UserCredential user=await  FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-                     if(user!=null){
-                       FirebaseFirestore.instance.collection('login').doc(user.user!.uid).set(
-
-
-                           {
-                             'name':_nameController.text,
-                             'uid':user.user!.uid,
-                             'createdat':DateTime.now(),
-                             'status':1,
-                             'password':_passwordController.text,
-                             'usertype':"user"
-                           }
-
-
-                       ).then((value) {  FirebaseFirestore.instance.collection('houses').doc(user.user!.uid).set(
-
-
-                           {
-
-                             'name':_nameController.text,
-                             'uid':user.user!.uid,
-                             'createdat':DateTime.now(),
-                             'status':1,
-                             'password':_passwordController.text,
-                           }
-
-                       );});
-
-                     }
+                  _register();
                    }
 
 
@@ -362,5 +339,67 @@ class _RegistrationState extends State<Registration> {
             ),
           )),
     );
+  }
+
+
+  //register
+  _register()async{
+
+   try{
+     UserCredential user=await  FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+     print(user.user!.email);
+
+     if(user!=null){
+       FirebaseFirestore.instance.collection('login').doc(user.user!.uid).set(
+
+
+           {
+             'name':_nameController.text,
+             'email':user.user!.email,
+             'uid':user.user!.uid,
+             'createdat':DateTime.now(),
+             'status':1,
+             'password':_passwordController.text,
+             'usertype':"house"
+           }
+
+
+       ).then((value) {  FirebaseFirestore.instance.collection('houses').doc(user.user!.uid).set(
+
+
+           {
+
+             'name':_nameController.text,
+             'email':user.user!.email,
+             'uid':user.user!.uid,
+             'createdat':DateTime.now(),
+             'status':1,
+             'address':_homeAddress.text,
+             'wardNo':_wardNumber.text,
+             'phone':_phoneNumber.text,
+             'loation':"",
+
+
+
+
+           }
+
+       );}).then((value)async {
+
+
+
+         final userdata= await FirebaseFirestore.instance.collection('houses').doc(user.user!.uid).get();
+         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage(data: userdata,)), (route) => false);
+
+       });
+
+     }
+   }on FirebaseAuthException catch(e){
+     print(e);
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
+   } on FirebaseException  catch(e){
+     print(e);
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
+   }
   }
 }

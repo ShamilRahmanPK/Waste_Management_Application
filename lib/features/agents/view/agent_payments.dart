@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class User_payments extends StatefulWidget {
-  const User_payments({super.key});
+class Agent_payments extends StatefulWidget {
+  const Agent_payments({super.key});
 
   @override
-  State<User_payments> createState() => _User_paymentsState();
+  State<Agent_payments> createState() => _Agent_paymentsState();
 }
 
-class _User_paymentsState extends State<User_payments> {
+class _Agent_paymentsState extends State<Agent_payments> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

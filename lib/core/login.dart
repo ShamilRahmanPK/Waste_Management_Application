@@ -12,9 +12,9 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+TextEditingController _emailController=TextEditingController();
+TextEditingController _passwordController=TextEditingController();
 class _LoginState extends State<Login> {
-  TextEditingController _emailController=TextEditingController();
-  TextEditingController _passwordController=TextEditingController();
 
   bool visible=true;
   @override
@@ -106,16 +106,17 @@ class _LoginState extends State<Login> {
                   ),
                   InkWell(
                     onTap: () async{
+                      
 
                       UserCredential _userrcredentials=await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
 
                       if(_userrcredentials!=null){
 
-                        final snap= await FirebaseFirestore.instance.collection('login').doc(_userrcredentials.user!.uid).get();
+                        final DocumentSnapshot snap= await FirebaseFirestore.instance.collection('login').doc(_userrcredentials.user!.uid).get();
 
                         if(snap!=null){
 
-                         if(snap['usertype']=='user'){
+                         if(snap['usertype']=='House'){
 
                            final userdata= await FirebaseFirestore.instance.collection('houses').doc(_userrcredentials.user!.uid).get();
                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage(data: userdata,)), (route) => false);
@@ -138,11 +139,19 @@ class _LoginState extends State<Login> {
                       ),)),
                     ),
                   ),
-                  TextButton(onPressed: () {
+                  SizedBox(height: 10,),
+                  Column(
+                    children: [
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Registration()), );
+                      Text("Dont have a account?"),
+                      TextButton(onPressed: () {
 
-                  }, child: Text("Register as HouseHold")),
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Registration()), );
+
+                      }, child: Text("Register as HouseHold")),
+
+                    ],
+                  ),
 
                 ],
               ),
@@ -156,3 +165,29 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+// _login() async{
+//   try{
+//     UserCredential _userrcredentials=await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+//
+//     if(_userrcredentials!=null){
+//
+//       final DocumentSnapshot snap= await FirebaseFirestore.instance.collection('login').doc(_userrcredentials.user!.uid).get();
+//
+//       if(snap!=null){
+//
+//         if(snap['usertype']=='House'){
+//
+//           final userdata= await FirebaseFirestore.instance.collection('houses').doc(_userrcredentials.user!.uid).get();
+//           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage(data: userdata,)), (route) => false);
+//
+//
+//         }
+//       }
+//
+//
+//     }
+//   }on FirebaseAuthException catch (e) {
+//
+//   }
+// }

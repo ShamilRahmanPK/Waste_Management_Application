@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class User_list extends StatefulWidget {
@@ -50,35 +51,191 @@ class _User_listState extends State<User_list> {
               ],
             ),
           ),
+
           Expanded(
-            child: ListView.builder(
-                itemCount: 15,
-                itemBuilder: (BuildContext context,int index){
-                  return ListTile(
-                    leading: CircleAvatar(
-                      radius: 25,
-                      child: Text("${index+1}"),
+            child: StreamBuilder(stream:FirebaseFirestore.instance.collection('houses').orderBy('createdat').snapshots(), builder: (context,snapshot){
+              if(snapshot.connectionState==ConnectionState.waiting){
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-                    ),
-                    title: Text("Shop1",style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),),
-                    subtitle: Text("House name: Puthukudi",style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal,
-                    ),),
-                    trailing: IconButton(
-                      onPressed: (){
+              if(snapshot.hasError){
 
-                      },
-                      icon:
-                      Icon(Icons.edit,color: Colors.black54,),
-                    ),
-                  );
-                }
-            ),
-          ),
+                return Center(
+                  child:Text("Some Error ccured ") ,
+                );
+              }
+
+              if(snapshot.hasData && snapshot.data!.docs.length==0){
+
+                return Center(
+                  child: Text("No house added"),
+
+                );
+              }
+
+              return  ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (BuildContext context,int index){
+
+                    final user=snapshot.data!.docs[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        color:user['status'] ==0?Colors.red:Colors.teal,
+                        elevation: 5.0,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 25,
+                            child: Text("${index+1}"),
+
+                          ),
+                          title: Text("${user['name']}",style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),),
+                          subtitle: Text("${user['address']}",style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal,
+                          ),),
+                          trailing: IconButton(
+                            onPressed: (){
+
+                              Map<String,dynamic> formData={};
+
+
+                             showDialog(context: context, builder: (context){
+
+
+                               return AlertDialog(
+
+                                 content:  Container(
+
+                                 height: 300,
+                                 width: MediaQuery.of(context).size.width,
+
+                                 child: Form(
+                                   child: SingleChildScrollView(
+                                     child: Column(
+                                       children: [
+
+                                         Row(
+                                           mainAxisAlignment: MainAxisAlignment.end,
+                                           children: [
+
+                                         user['status']==1?    IconButton(onPressed: (){
+
+                                               FirebaseFirestore.instance.collection('houses').doc(user['uid']).update(
+                                                   {'status': 0});
+                                               Navigator.pop(context);
+
+                                             }, icon: Icon(Icons.delete,color: Colors.red,)):
+
+                                         IconButton(onPressed: (){
+
+                                           FirebaseFirestore.instance.collection('houses').doc(user['uid']).update(
+                                               {'status': 1});
+                                           Navigator.pop(context);
+
+                                         }, icon: Icon(Icons.check,color: Colors.green,))
+                                           ],
+                                         ),
+
+                                         TextField(
+
+                                           controller: TextEditingController(text: user['name']),
+                                           onSubmitted: (value){
+
+                                             formData['name']=value;
+
+
+                                           },
+
+
+                                         ),
+                                         TextField(
+
+                                           controller: TextEditingController(text: user['address']),
+                                           onSubmitted: (value){
+
+                                             formData['address']=value;
+
+
+                                           },
+
+
+                                         ),
+                                         TextField(
+
+                                           controller: TextEditingController(text: user['houseName']),
+                                           onSubmitted: (value){
+
+                                             formData['houseName']=value;
+
+
+                                           },
+
+
+                                         ),
+                                         TextField(
+
+                                           controller: TextEditingController(text: user['houseNo']),
+                                           onSubmitted: (value){
+
+                                             formData['houseNo']=value;
+
+
+                                           },
+
+
+                                         ),
+                                         TextField(
+
+                                           controller: TextEditingController(text: user['wardNo']),
+                                           onSubmitted: (value){
+
+                                             formData['wardNo']=value;
+
+
+                                           },
+
+
+                                         ),
+
+                                         ElevatedButton(onPressed: (){
+
+                                           FirebaseFirestore.instance.collection('houses').doc(user['uid']).update(formData);
+                                           Navigator.pop(context);
+                                         }, child: Text("Update"))
+
+                                       ],
+                                     ),
+                                   ),
+                                 ),
+
+                               ),
+                               );
+
+                              });
+
+                            },
+                            icon:
+                            Icon(Icons.edit,color: Colors.black54,),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+              );
+
+            }),
+          )
+
+
+
+
+
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hksena/features/user/view/paymentss.dart';
 
 class Wetwaste extends StatefulWidget {
   const Wetwaste({super.key});
@@ -28,6 +29,7 @@ class _WetwasteState extends State<Wetwaste> {
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             Container(
@@ -68,7 +70,8 @@ class _WetwasteState extends State<Wetwaste> {
                 top: 250,
                 child: Container(
               height: 550,
-              width: 415,
+              width: MediaQuery.of(context).size.width,
+              // width: 415,
               padding: EdgeInsets.all(30),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -114,6 +117,7 @@ class _WetwasteState extends State<Wetwaste> {
                       child: InkWell(
                         onTap: (){
 
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Payment_success()));
                         },
                         child: Container(
                           alignment: Alignment.center,

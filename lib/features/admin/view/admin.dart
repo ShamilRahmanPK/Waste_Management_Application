@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hksena/core/login.dart';
 import 'package:hksena/features/admin/view/add_agent.dart';
 import 'package:hksena/features/admin/view/admin_cmpl.dart';
 import 'package:hksena/features/admin/view/admin_pay.dart';
@@ -124,7 +125,7 @@ class _AdminState extends State<Admin> {
               InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Shops()));
+                      MaterialPageRoute(builder: (context) => ShopList()));
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: 15),
@@ -262,6 +263,56 @@ class _AdminState extends State<Admin> {
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                         color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Confirm Logout"),
+                        content: Text("Are you sure you want to log out?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text("Cancel"),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                          ),
+                          TextButton(
+                            child: Text("Logout"),
+                            onPressed: () {
+                              // Perform logout operation
+                              final route = MaterialPageRoute(builder: (context) => Login());
+                              Navigator.pushAndRemoveUntil(context, route, (route) => false);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 15),
+                  alignment: Alignment.centerLeft,
+                  height: 55,
+                  width: 352,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.red,
+                  ),
+                  child: Text(
+                    "+ Log Out",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
