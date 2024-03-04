@@ -19,16 +19,27 @@ class _MessageState extends State<Message> {
             Text(
               "Message",
               style: TextStyle(
-                  fontSize: 24, fontWeight: FontWeight.w400, color: Colors.white),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white),
             ),
-            Image.asset("assests/images/logo1.png",height: 50,)
+            Image.asset(
+              "assests/images/logo1.png",
+              height: 50,
+            )
           ],
         ),
       ),
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(bottom: 5,right: 5,left: 5),
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
+        padding: EdgeInsets.only(bottom: 5, right: 5, left: 5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -42,39 +53,45 @@ class _MessageState extends State<Message> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(35)
-                    ),
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(35)),
                     height: double.infinity,
                   ),
                   Positioned(
                     right: 5,
-                      child: Container(
-                        child: IconButton.filled(onPressed:(){
-                          
-                        },
-                            icon: Icon(Icons.send,color: Colors.lightGreenAccent,)),
-                        margin: EdgeInsets.all(5),
-                        width: 80,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: Color(0xff006937),
-                        borderRadius: BorderRadius.circular(50))
-                  )),
+                    child: Container(
+                      child: IconButton.filled(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.send,
+                          color: Colors.lightGreenAccent,
+                        ),
+                      ),
+                      margin: EdgeInsets.all(5),
+                      width: 80,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          color: Color(0xff006937),
+                          borderRadius: BorderRadius.circular(50)),
+                    ),
+                  ),
                   Positioned(
                     left: 5,
-                      child: Container(
-                        child: TextField(
-
+                    right: 90, // Adjusted width
+                    child: Container(
+                      child: TextField(
+                        decoration: InputDecoration(
+                            border: InputBorder.none
                         ),
-                        margin: EdgeInsets.only(top: 8,bottom: 8),
-                        padding: EdgeInsets.only(right: 10,left: 10),
-                        width: 300,
-                    height: 55,
-                    decoration: BoxDecoration(
-                        color: Colors.white70,
-                        borderRadius: BorderRadius.circular(50))
-                  ))
+                      ),
+                      margin: EdgeInsets.only(top: 8, bottom: 8),
+                      padding: EdgeInsets.only(right: 10, left: 10),
+                      height: 55,
+                      decoration: BoxDecoration(
+                          color: Colors.white70,
+                          borderRadius: BorderRadius.circular(50)),
+                    ),
+                  ),
                 ],
               ),
             )
