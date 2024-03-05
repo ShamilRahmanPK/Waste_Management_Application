@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hksena/features/admin/model/userrmodel.dart';
 import 'package:hksena/features/user/view/homepage.dart';
+import 'package:hksena/services/auth_service.dart';
 
 class Registration extends StatefulWidget {
   const Registration({super.key});
@@ -11,7 +13,6 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
@@ -21,13 +22,9 @@ class _RegistrationState extends State<Registration> {
   TextEditingController _locationController = TextEditingController();
   TextEditingController _userName = TextEditingController();
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
-    final _regKey=GlobalKey<FormState>();
+    final _regKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff006937),
@@ -37,24 +34,28 @@ class _RegistrationState extends State<Registration> {
             Text(
               "Registration",
               style: TextStyle(
-                  fontSize: 24, fontWeight: FontWeight.w400, color: Colors.white),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white),
             ),
-            Image.asset("assests/images/logo1.png",height: 50,)
+            Image.asset(
+              "assests/images/logo1.png",
+              height: 50,
+            )
           ],
         ),
       ),
-      body: Stack(
-        children: [
+      body: Stack(children: [
         Positioned(
-        top: 520,
-        // right: 70,
-        child: Image.asset(
-          "assests/images/reg.png",
-          height: 400,
-          fit: BoxFit.cover,
+          top: 520,
+          // right: 70,
+          child: Image.asset(
+            "assests/images/reg.png",
+            height: 400,
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      Container(
+        Container(
             padding: EdgeInsets.only(left: 30, right: 30, top: 20),
             width: double.infinity,
             height: double.infinity,
@@ -66,9 +67,8 @@ class _RegistrationState extends State<Registration> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      validator: (value){
-
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "* Full name is Mandatory";
                         }
                       },
@@ -79,16 +79,20 @@ class _RegistrationState extends State<Registration> {
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -96,12 +100,10 @@ class _RegistrationState extends State<Registration> {
                       height: 25,
                     ),
                     TextFormField(
-                      validator: (value){
-
-                        if(value!.isEmpty){
-                          return "*  Please enter your address" ;
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "*  Please enter your address";
                         }
-
                       },
                       controller: _homeAddress,
                       cursorColor: Colors.black38,
@@ -110,16 +112,20 @@ class _RegistrationState extends State<Registration> {
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -127,12 +133,10 @@ class _RegistrationState extends State<Registration> {
                       height: 20,
                     ),
                     TextFormField(
-                      validator: (value){
-
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "* Ward number is required";
                         }
-
                       },
                       controller: _wardNumber,
                       cursorColor: Colors.black38,
@@ -141,16 +145,20 @@ class _RegistrationState extends State<Registration> {
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -158,12 +166,10 @@ class _RegistrationState extends State<Registration> {
                       height: 20,
                     ),
                     TextFormField(
-                      validator: (value){
-
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "* Phone number is required";
                         }
-
                       },
                       controller: _phoneNumber,
                       cursorColor: Colors.black38,
@@ -173,16 +179,20 @@ class _RegistrationState extends State<Registration> {
                         errorStyle: TextStyle(fontStyle: FontStyle.italic),
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -190,12 +200,10 @@ class _RegistrationState extends State<Registration> {
                       height: 20,
                     ),
                     TextFormField(
-                      validator: (value){
-
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "Please enter a user name";
                         }
-
                       },
                       controller: _userName,
                       cursorColor: Colors.black38,
@@ -204,16 +212,20 @@ class _RegistrationState extends State<Registration> {
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -227,20 +239,23 @@ class _RegistrationState extends State<Registration> {
                         hintText: "Location",
                         fillColor: Colors.white,
                         filled: true,
-                        suffixIcon: IconButton(onPressed: (){
-
-                        }, icon: Icon(Icons.add_location)),
+                        suffixIcon: IconButton(
+                            onPressed: () {}, icon: Icon(Icons.add_location)),
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -250,21 +265,18 @@ class _RegistrationState extends State<Registration> {
                     Text(
                       "Login Details",
                       style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff006937)
-                      ),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff006937)),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     TextFormField(
-                      validator: (value){
-
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "* Email is required";
                         }
-
                       },
                       controller: _emailController,
                       cursorColor: Colors.black38,
@@ -273,16 +285,20 @@ class _RegistrationState extends State<Registration> {
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -290,12 +306,10 @@ class _RegistrationState extends State<Registration> {
                       height: 20,
                     ),
                     TextFormField(
-                      validator: (value){
-
-                        if(value!.isEmpty){
+                      validator: (value) {
+                        if (value!.isEmpty) {
                           return "* Enter 8 digit password";
                         }
-
                       },
                       controller: _passwordController,
                       cursorColor: Colors.black38,
@@ -304,16 +318,20 @@ class _RegistrationState extends State<Registration> {
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey,width: 1.5),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                         focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xff006937),width: 1.5),
+                            borderSide: BorderSide(
+                                color: Color(0xff006937), width: 1.5),
                             borderRadius: BorderRadius.circular(10)),
                       ),
                     ),
@@ -321,14 +339,10 @@ class _RegistrationState extends State<Registration> {
                       height: 20,
                     ),
                     InkWell(
-                      onTap: () async{
-
-                     if(_regKey.currentState!.validate()){
-
-                    _register();
-                     }
-
-
+                      onTap: () async {
+                        if (_regKey.currentState!.validate()) {
+                          _register();
+                        }
                       },
                       child: Center(
                         child: Container(
@@ -349,70 +363,38 @@ class _RegistrationState extends State<Registration> {
                 ),
               ),
             )),
-      ]
-      ),
+      ]),
     );
   }
 
-
   //register
-  _register()async{
+  _register() async {
+    try {
+      UserModel user = UserModel(
+          name: _nameController.text,
+          email: _emailController.text,
+          status: 1,
+          pass: _passwordController.text,
+          address: _homeAddress.text,
+          wardNo: _wardNumber.text,
+          phone: _phoneNumber.text,
+          location: _locationController.text,
+          type: "house");
 
-   try{
-     UserCredential user=await  FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-     print(user.user!.email);
-
-     if(user!=null){
-       FirebaseFirestore.instance.collection('login').doc(user.user!.uid).set(
-
-
-           {
-             'name':_nameController.text,
-             'email':user.user!.email,
-             'uid':user.user!.uid,
-             'createdat':DateTime.now(),
-             'status':1,
-             'password':_passwordController.text,
-             'usertype':"house"
-           }
-
-
-       ).then((value) {  FirebaseFirestore.instance.collection('houses').doc(user.user!.uid).set(
-
-
-           {
-
-             'name':_nameController.text,
-             'email':user.user!.email,
-             'uid':user.user!.uid,
-             'createdat':DateTime.now(),
-             'status':1,
-             'address':_homeAddress.text,
-             'wardNo':_wardNumber.text,
-             'phone':_phoneNumber.text,
-             'loation':"",
-
-
-
-
-           }
-
-       );}).then((value)async {
-
-
-
-         final userdata= await FirebaseFirestore.instance.collection('houses').doc(user.user!.uid).get();
-         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage(data: userdata,)), (route) => false);
-
-       });
-
-     }
-   }on FirebaseAuthException catch(e){
-     print(e);
-     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
-   } on FirebaseException  catch(e){
-     print(e);
-     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
-   }
+      AuthService _authService = AuthService();
+      bool? res = await _authService.signInWithEmailAndPassword(user);
+      if (res == true) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (route) => false);
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
+    } on FirebaseException catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
+    }
   }
 }

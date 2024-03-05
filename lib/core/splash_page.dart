@@ -6,6 +6,8 @@ import 'package:hksena/features/user/view/add_bin.dart';
 import 'package:hksena/features/user/view/homepage.dart';
 import 'package:hksena/features/user/view/paymentss.dart';
 import 'package:hksena/features/user/view/registration.dart';
+import 'package:hksena/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,13 +17,81 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  String? uid;
+  String? name;
+  String? email;
+  String? ward;
+  String? phone;
+  String? addres;
+  String? type;
+  String? location;
+  String? token;
+
+  getData() async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    try {
+      uid = _prefs.getString(
+        'uid',
+      );
+      name = _prefs.getString(
+        'name',
+      );
+      _prefs.getString(
+        'email',
+      );
+      _prefs.getString(
+        'address',
+      );
+      ward = _prefs.getString(
+        'wardNo',
+      );
+      phone = _prefs.getString(
+        'phone',
+      );
+      location = _prefs.getString(
+        'location',
+      );
+      token = _prefs.getString(
+        'token',
+      );
+      type = _prefs.getString(
+        'type',
+      );
+
+      setState(() {});
+      // You can save additional data to SharedPreferences if needed
+    } catch (error) {
+      print("Error saving user data to SharedPreferences: $error");
+    }
+  }
+
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) => Login()), (route) => false);
+    Future.delayed(Duration(seconds: 2), () {
+      getData();
+      checkStatus();
     });
+
     super.initState();
+  }
+
+  bool? status = false;
+  checkStatus() async {
+    AuthService _authService = AuthService();
+    status = await _authService.checkLoginStatus();
+    print(status);
+    print(token);
+    if (status == true) {
+      if (type == "house") {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (route) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) => Login()), (route) => false);
+      }
+    }
   }
 
   @override

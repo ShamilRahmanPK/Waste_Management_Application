@@ -10,6 +10,7 @@ import 'package:hksena/features/user/view/my_account.dart';
 import 'package:hksena/features/user/view/my_agent.dart';
 import 'package:hksena/features/user/view/request.dart';
 import 'package:hksena/features/user/view/user_payments.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   final DocumentSnapshot? data;
@@ -20,6 +21,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  String?uid;
+  String?name;
+  String?email;
+  String?ward;
+  String?phone;
+  String?addres;
+  String?type;
+  String?location;
+  String?token;
+
+
+
+  getData()async{
+    final SharedPreferences _prefs =await SharedPreferences.getInstance();
+    try {
+   uid=   _prefs.getString('uid', );
+     name= _prefs.getString('name',);_prefs.getString('email', );_prefs.getString('address', );
+   ward =  _prefs.getString('wardNo', );
+  phone  =  _prefs.getString('phone', );
+   location =  _prefs.getString('location', );
+     token= _prefs.getString('token', );
+    type=  _prefs.getString('type', );
+
+    setState(() {
+
+    });
+      // You can save additional data to SharedPreferences if needed
+    } catch (error) {
+      print("Error saving user data to SharedPreferences: $error");
+    }
+  }
+
+  @override
+  void initState() {
+   Future.delayed(Duration(seconds: 2),(){
+     getData();
+   });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +84,8 @@ class _HomePageState extends State<HomePage> {
             ),
             // ${widget.data!['name']}
             Text(
-              "Good Morning,${widget.data!['name']}!",
+              "Good Morning,${name
+              }!",
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,

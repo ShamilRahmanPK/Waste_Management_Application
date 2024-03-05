@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hksena/features/admin/model/userrmodel.dart';
 import 'package:hksena/features/admin/view/admin.dart';
 import 'package:hksena/features/user/view/homepage.dart';
 import 'package:hksena/features/user/view/registration.dart';
+import 'package:hksena/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -122,25 +124,13 @@ class _LoginState extends State<Login> {
                         onTap: () async{
 
 
-                          UserCredential _userrcredentials=await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                         UserModel usr=UserModel(email: _emailController.text,pass: _passwordController.text);
+                         AuthService _authService=AuthService();
+                        bool?res=await _authService.loginUser(usr);
+                        if(res==true){
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
 
-                          if(_userrcredentials!=null){
-
-                            final DocumentSnapshot snap= await FirebaseFirestore.instance.collection('login').doc(_userrcredentials.user!.uid).get();
-
-                            if(snap!=null){
-
-                              if(snap['usertype']=='House'){
-
-                                final userdata= await FirebaseFirestore.instance.collection('houses').doc(_userrcredentials.user!.uid).get();
-                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage(data: userdata,)), (route) => false);
-
-
-                              }
-                            }
-
-
-                          }
+                        }
 
                         },
                         child: Container(
