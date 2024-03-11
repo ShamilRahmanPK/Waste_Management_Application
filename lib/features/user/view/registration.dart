@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hksena/core/login.dart';
 import 'package:hksena/features/admin/model/userrmodel.dart';
 import 'package:hksena/features/user/view/homepage.dart';
 import 'package:hksena/services/auth_service.dart';
@@ -382,11 +383,11 @@ class _RegistrationState extends State<Registration> {
           type: "house");
 
       AuthService _authService = AuthService();
-      bool? res = await _authService.signInWithEmailAndPassword(user);
+      bool? res = await _authService.houseRegistration(user);
       if (res == true) {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => Login()),
             (route) => false);
       }
     } on FirebaseAuthException catch (e) {

@@ -78,16 +78,16 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xff006937),
         toolbarHeight: 120,
         title: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 50,
-            ),
+
             // ${widget.data!['name']}
             Text(
               "Good Morning,${name
               }!",
               style: TextStyle(
-                fontSize: 12,
+                color: Colors.white,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Request()));
+                                  builder: (context) => Request(uid: uid,)));
                         },
                         child: Container(
                           height: 100,
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => User_payments()));
+                                  builder: (context) => UserPayments(uid: uid,)));
                         },
                         child: Container(
                           height: 100,
@@ -297,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => My_acount()));
+                                  builder: (context) =>  MyAccount()));
                         },
                         child: Container(
                           height: 100,
@@ -393,7 +393,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Agents()));
+                                  builder: (context) => AgentHome()));
                         },
                         child: Container(
                           height: 100,

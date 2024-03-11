@@ -7,6 +7,7 @@ import 'package:hksena/features/admin/view/admin_reg.dart';
 import 'package:hksena/features/admin/view/shops.dart';
 import 'package:hksena/features/admin/view/user.dart';
 import 'package:hksena/features/user/view/registration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Admin extends StatefulWidget {
   const Admin({super.key});
@@ -286,8 +287,9 @@ class _AdminState extends State<Admin> {
                           ),
                           TextButton(
                             child: Text("Logout"),
-                            onPressed: () {
-                              // Perform logout operation
+                            onPressed: () async{
+                              SharedPreferences _pref=await SharedPreferences.getInstance();
+_pref.clear();
                               final route = MaterialPageRoute(builder: (context) => Login());
                               Navigator.pushAndRemoveUntil(context, route, (route) => false);
                             },

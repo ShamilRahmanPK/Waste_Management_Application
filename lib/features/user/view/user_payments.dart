@@ -1,107 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hksena/features/user/view/homepage.dart';
+import 'package:intl/intl.dart';
 
-class User_payments extends StatefulWidget {
-  const User_payments({super.key});
+class UserPayments extends StatefulWidget {
+  final uid;
+  const UserPayments({Key? key,this.uid});
 
   @override
-  State<User_payments> createState() => _User_paymentsState();
+  State<UserPayments> createState() => _UserPaymentsState();
 }
 
-class _User_paymentsState extends State<User_payments> {
+class _UserPaymentsState extends State<UserPayments> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff006937),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Payements",
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
-            ),
-            Image.asset(
-              "assests/images/logo1.png",
-              height: 50,
-            )
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 10),
-            padding: EdgeInsets.all(15),
-            color: Colors.grey.shade400,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("ID",style: TextStyle(
-                  fontSize: 18,
-                ),),
-                Text("Name",style: TextStyle(
-                  fontSize: 18,
-                ),),
-                Text("Date",style: TextStyle(
-                  fontSize: 18,
-                ),),
-                Text("Amount",style: TextStyle(
-                  fontSize: 18,
-                ),),
-              ],
-            ),
-          ),
-          Expanded(child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (BuildContext, index) {
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text("Payment History"),
+      ),  
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('payments')
+              .where('userid', isEqualTo: "${widget.uid}")
+              .orderBy('createdat', descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Center(child: Text("No transactions found"));
+            }
+            return ListView(
+              children: snapshot.data!.docs.map((doc) {
+                // Extracting data from each payment document
+                var amount = doc['amount'];
+                var bookingId = doc['bookingid'];
+                var createdAt = (doc['createdat'] as Timestamp).millisecondsSinceEpoch;
+                var orderId = doc['orderId'];
+                var paymentId = doc['paymentid'];
+                var paymentTitle = doc['paymenttitle'];
+                var settlementStatus = doc['settlementStatus'];
+                var status = doc['status'];
+
+                // Format createdAt to a readable date string
+                var formattedDate =
+                DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.fromMillisecondsSinceEpoch(createdAt));
+
+                // Creating a ListTile for each transaction
                 return Card(
+                  elevation: 5.0,
                   child: ListTile(
-                    leading: Text("#1089"),
-                    title: Text("Shamil Rahman PK"),
-                    subtitle: Text("Home"),
-                    trailing: Text("Rs.50"),
+                    title: Text("Payment Title: $paymentTitle"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Amount: $amount"),
+                        Text("Order ID: $orderId"),
+                        Text("Booking ID: $bookingId"),
+                        Text("Payment ID: $paymentId"),
+                        Text("Created At: $formattedDate"),
+                        Text("Settlement Status: $settlementStatus"),
+                        Text("Status: ${status==1?"Success":"Failed"}",style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),),
+                      ],
+                    ),
                   ),
                 );
-                // return Column(
-                //   children: [
-                //     SizedBox(height: 30,),
-                //     Row(
-                //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //       children: [
-                //         Text("#1089",style: TextStyle(
-                //           fontSize: 18,
-                //           color: Colors.blueAccent
-                //         ),),
-                //         Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text("Shamil Rahman",style: TextStyle(
-                //               fontSize: 18,
-                //             ),),
-                //             Text("Home",style: TextStyle(color: Colors.grey),)
-                //           ],
-                //         ),
-                //         Text("25/12/2023",style: TextStyle(
-                //           fontSize: 16,
-                //         ),),
-                //         Text("Rs.50",style: TextStyle(
-                //           fontSize: 18,
-                //         ),),
-                //       ],
-                //     ),
-                //     SizedBox(height: 30,),
-                //     Divider(
-                //       color: Colors.grey,
-                //       height: 20,
-                //       thickness: 1,
-                //     ),
-                //   ],
-                // );
-              }))
-        ],
+              }).toList(),
+            );
+          },
+        ),
       ),
     );
   }

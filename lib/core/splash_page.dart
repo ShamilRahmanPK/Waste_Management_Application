@@ -81,16 +81,35 @@ class _SplashPageState extends State<SplashPage> {
     status = await _authService.checkLoginStatus();
     print(status);
     print(token);
+    print(type);
     if (status == true) {
       if (type == "house") {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
             (route) => false);
-      } else {
+      }
+
+     else if (type == "shop") {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+                (route) => false);
+      }
+
+      else if (type == "agent") {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => AgentHome()),
+                (route) => false);
+      }
+      else {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (context) => Login()), (route) => false);
       }
+    }else {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => Login()), (route) => false);
     }
   }
 

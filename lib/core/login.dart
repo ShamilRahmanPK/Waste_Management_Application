@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hksena/features/admin/model/userrmodel.dart';
 import 'package:hksena/features/admin/view/admin.dart';
+import 'package:hksena/features/agents/view/agents.dart';
 import 'package:hksena/features/user/view/homepage.dart';
 import 'package:hksena/features/user/view/registration.dart';
 import 'package:hksena/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -124,12 +126,27 @@ class _LoginState extends State<Login> {
                         onTap: () async{
 
 
-                         UserModel usr=UserModel(email: _emailController.text,pass: _passwordController.text);
-                         AuthService _authService=AuthService();
-                        bool?res=await _authService.loginUser(usr);
-                        if(res==true){
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+                        if(_emailController.text=="admin@gmail.com"&& _passwordController.text=="12345678"){
+                          UserModel usr=UserModel(email: _emailController.text,pass: _passwordController.text,type: "admin",phone: "9895663498",);
+                          _saveUserDataToPrefs(usr,"adminToken",);
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Admin()), (route) => false);
 
+                        }else{
+                          UserModel usr=UserModel(email: _emailController.text,pass: _passwordController.text);
+                          AuthService _authService=AuthService();
+                          var res=await _authService.loginUser(usr);
+                          if(res!['type']=="house"){
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+
+                          }
+                         else if(res!['type']=="shop"){
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
+
+                          }
+                         else if(res!['type']=="agent"){
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>AgentHome()), (route) => false);
+
+                          }
                         }
 
                         },
@@ -168,6 +185,25 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
+  }
+
+  Future<void> _saveUserDataToPrefs(UserModel user, String ?token,) async {
+    final SharedPreferences _prefs =await SharedPreferences.getInstance();
+    try {
+     // _prefs.setString('uid', result.user!.uid);
+      _prefs.setString('name', user.name.toString());
+      _prefs.setString('email', user.email.toString());
+      // _prefs.setString('address', user.address.toString());
+      //_prefs.setString('wardNo', user.wardNo.toString());
+      _prefs.setString('phone', user.phone.toString());
+      // _prefs.setString('location', user.location.toString());
+      _prefs.setString('token', token.toString());
+      _prefs.setString('type', user.type.toString());
+      // You can save additional data to SharedPreferences if needed
+    } catch (error) {
+      print("Error saving user data to SharedPreferences: $error");
+    }
+
   }
 }
 

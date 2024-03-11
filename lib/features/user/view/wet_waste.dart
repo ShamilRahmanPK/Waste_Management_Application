@@ -117,7 +117,7 @@ class _WetwasteState extends State<Wetwaste> {
                       child: InkWell(
                         onTap: (){
 
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>Payment_success()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentSuccess()));
                         },
                         child: Container(
                           alignment: Alignment.center,

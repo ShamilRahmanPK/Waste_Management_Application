@@ -152,7 +152,7 @@ class _Add_agentState extends State<Add_agent> {
 
                       decoration: InputDecoration(
 
-                        hintText: "Collection area",
+                        hintText: "Ward",
                         fillColor: Colors.white,
                         filled: true,
                         enabledBorder: OutlineInputBorder(
@@ -172,7 +172,7 @@ class _Add_agentState extends State<Add_agent> {
 
                       value: selectedItem,
 
-                      items: ["Kunnapally","Perinthalmanna","Kattupara"].map(
+                      items: ["1","2","3","4","5","6","7","8","9","10","11","12"].map(
 
                               (item) => DropdownMenuItem<String>(
                               value: item,
@@ -428,32 +428,35 @@ class _Add_agentState extends State<Add_agent> {
 
 
             {
-              'name':_nameController.text,
-              'email': user.user!.email,
+
               'uid':user.user!.uid,
-              'createdat':DateTime.now(),
-              'status':1,
-              'password':_passwordController.text,
-              'usertype':"Agent"
+
+
+
+              'type':"agent"
             }
 
 
-        ).then((value) {  FirebaseFirestore.instance.collection('Agent').doc(user.user!.uid).set(
+        ).then((value) {  FirebaseFirestore.instance.collection('agent').doc(user.user!.uid).set(
 
             {
+              'uid':user.user!.uid,
+              'phone':_phoneNumber.text,
               'name':_nameController.text,
-              'userName':_userName,
+              'userName':_userName.text,
               'uid':user.user!.uid,
               'createdat':DateTime.now(),
               'status':1,
               'password':_passwordController.text,
               'address':_homeAddress.text,
               'assignedArea': selectedItem,
+              'type':"agent",
+              'email':_emailController.text
             }
 
         );}
 
-        );
+        ).then((value) => Navigator.pop(context));
 
       }
       }

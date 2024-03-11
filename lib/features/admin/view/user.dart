@@ -18,7 +18,7 @@ class _User_listState extends State<User_list> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "All User",
+              "All Users",
               style: TextStyle(
                   fontSize: 24, fontWeight: FontWeight.w400, color: Colors.white),
             ),
@@ -28,32 +28,32 @@ class _User_listState extends State<User_list> {
       ),
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.only(top: 15,bottom: 10),
-            color: Colors.grey,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                    padding: EdgeInsets.only(right: 50),
-                    child: Text("No:",style: TextStyle(
-                      fontSize: 18,
-                    ),)
-                ),
-                Container(
-                    padding: EdgeInsets.only(right: 50),
-                    child: Text("Name",style: TextStyle(
-                      fontSize: 18,
-                    ),)),
-                Text("Edit",style: TextStyle(
-                  fontSize: 18,
-                ),),
-              ],
-            ),
-          ),
+          // Container(
+          //   padding: EdgeInsets.only(top: 15,bottom: 10),
+          //   color: Colors.grey,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //     children: [
+          //       Container(
+          //           padding: EdgeInsets.only(right: 50),
+          //           child: Text("No:",style: TextStyle(
+          //             fontSize: 18,
+          //           ),)
+          //       ),
+          //       Container(
+          //           padding: EdgeInsets.only(right: 50),
+          //           child: Text("Name",style: TextStyle(
+          //             fontSize: 18,
+          //           ),)),
+          //       Text("Edit",style: TextStyle(
+          //         fontSize: 18,
+          //       ),),
+          //     ],
+          //   ),
+          // ),
 
           Expanded(
-            child: StreamBuilder(stream:FirebaseFirestore.instance.collection('houses').orderBy('createdat').snapshots(), builder: (context,snapshot){
+            child: StreamBuilder(stream:FirebaseFirestore.instance.collection('houses').orderBy('createdAt').snapshots(), builder: (context,snapshot){
               if(snapshot.connectionState==ConnectionState.waiting){
                 return Center(
                   child: CircularProgressIndicator(),
@@ -112,7 +112,7 @@ class _User_listState extends State<User_list> {
 
                                  content:  Container(
 
-                                 height: 300,
+                                 height: 340,
                                  width: MediaQuery.of(context).size.width,
 
                                  child: Form(
@@ -147,7 +147,9 @@ class _User_listState extends State<User_list> {
                                            controller: TextEditingController(text: user['name']),
                                            onSubmitted: (value){
 
-                                             formData['name']=value;
+                                            setState(() {
+                                              formData['name']=value;
+                                            });
 
 
                                            },
@@ -159,7 +161,9 @@ class _User_listState extends State<User_list> {
                                            controller: TextEditingController(text: user['address']),
                                            onSubmitted: (value){
 
-                                             formData['address']=value;
+                                            setState(() {
+                                              formData['address']=value;
+                                            });
 
 
                                            },
@@ -168,22 +172,12 @@ class _User_listState extends State<User_list> {
                                          ),
                                          TextField(
 
-                                           controller: TextEditingController(text: user['houseName']),
+                                           controller: TextEditingController(text: user['name']),
                                            onSubmitted: (value){
 
-                                             formData['houseName']=value;
-
-
-                                           },
-
-
-                                         ),
-                                         TextField(
-
-                                           controller: TextEditingController(text: user['houseNo']),
-                                           onSubmitted: (value){
-
-                                             formData['houseNo']=value;
+                                           setState(() {
+                                             formData['name']=value;
+                                           });
 
 
                                            },
@@ -195,7 +189,23 @@ class _User_listState extends State<User_list> {
                                            controller: TextEditingController(text: user['wardNo']),
                                            onSubmitted: (value){
 
-                                             formData['wardNo']=value;
+                                            setState(() {
+                                              formData['ward']=value;
+                                            });
+
+
+                                           },
+
+
+                                         ),
+                                         TextField(
+
+                                           controller: TextEditingController(text: "House No"),
+                                           onSubmitted: (value){
+
+                                             setState(() {
+                                               formData['houseNo']=value;
+                                             });
 
 
                                            },
@@ -204,10 +214,10 @@ class _User_listState extends State<User_list> {
                                          ),
 
                                          ElevatedButton(onPressed: (){
-
+print(formData);
                                            FirebaseFirestore.instance.collection('houses').doc(user['uid']).update(formData);
                                            Navigator.pop(context);
-                                         }, child: Text("Update"))
+                                         }, child: Text("Update",style: TextStyle(color: Colors.black),))
 
                                        ],
                                      ),
