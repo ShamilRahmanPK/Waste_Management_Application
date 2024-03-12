@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hksena/features/admin/model/shop_model.dart';
+import 'package:hksena/features/admin/model/userrmodel.dart';
+import 'package:hksena/features/user/view/homepage.dart';
+import 'package:hksena/services/auth_service.dart';
 
 class Admin_reg extends StatefulWidget {
   const Admin_reg({super.key});
@@ -494,74 +498,32 @@ class _Admin_regState extends State<Admin_reg> {
 
   _register() async {
     try {
-      UserCredential user = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: _emailController.text, password: _passwordController.text);
-      print(user.user!.email);
+      ShopModel shop = ShopModel(
+          name: _shopName.text,
+          email: _emailController.text,
+          status: 1,
+          pass: _passwordController.text,
+          address: _addressController.text,
+          wardNo: _wardNumber.text,
+          phone: _phoneNumber.text,
+          location: _locationController.text,
+          shopNo: _shopNumber.text,
+          type: "shop");
 
-      if (user != null) {
-        FirebaseFirestore.instance.collection('login').doc(user.user!.uid).set({
-          'name': _userName.text,
-          'email': user.user!.email,
-          'uid': user.user!.uid,
-          'createdat': DateTime.now(),
-          'status': 1,
-          'password': _passwordController.text,
-          'usertype': selectedItem
-        });
-
-        if (selectedItem == "House") {
-          FirebaseFirestore.instance
-              .collection('houses')
-              .doc(user.user!.uid)
-              .set({
-            'name' : _userName.text,
-            'houseName': _houseName.text,
-            'email': user.user!.email,
-            'uid': user.user!.uid,
-            'createdat': DateTime.now(),
-            'status': 1,
-            'address': _addressController.text,
-            'wardNo': _wardNumber.text,
-            'houseNo': _houseNumber.text,
-            'phone': _phoneNumber.text,
-            'loation': "",
-          });
-          final returnUser=FirebaseFirestore.instance.collection("house").doc(user.user!.uid).get();
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Successfully registered $returnUser")));
-        }
-        else {
-          FirebaseFirestore.instance
-              .collection('shops')
-              .doc(user.user!.uid)
-              .set({
-            'ownerName': _ownerName.text,
-            'email': user.user!.email,
-            'uid': user.user!.uid,
-            'createdat': DateTime.now(),
-            'status': 1,
-            'address': _addressController.text,
-            'ShopNumber': _shopNumber.text,
-            'phone': _phoneNumber.text,
-            'loation': "",
-          });
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Successfully registered $_userName")));
-        }
+      AuthService _authService = AuthService();
+      bool? res = await _authService.shopRegistration(shop);
+      if (res == true) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+                (route) => false);
       }
     } on FirebaseAuthException catch (e) {
       print(e);
-      final err = splitError(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("$err"),
-        backgroundColor: Colors.red,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
     } on FirebaseException catch (e) {
       print(e);
-      final err = splitError(e.toString());
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("$err")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
     }
   }
 

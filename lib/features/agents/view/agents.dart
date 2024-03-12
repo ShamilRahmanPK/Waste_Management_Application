@@ -5,14 +5,14 @@ import 'package:hksena/features/agents/view/agent_payments.dart';
 import 'package:hksena/features/agents/view/collectingp.dart';
 import 'package:hksena/features/agents/view/message.dart';
 
-class Agents extends StatefulWidget {
-  const Agents({super.key});
+class AgentHome extends StatefulWidget {
+  const AgentHome({super.key});
 
   @override
-  State<Agents> createState() => _AgentsState();
+  State<AgentHome> createState() => _AgentHomeState();
 }
 
-class _AgentsState extends State<Agents> {
+class _AgentHomeState extends State<AgentHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

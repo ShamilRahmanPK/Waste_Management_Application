@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserModel {
+class ShopModel {
   String? name;
   String? email;
   String? uid;
@@ -10,10 +10,11 @@ class UserModel {
   String? wardNo;
   String? phone;
   String? location;
+  String?shopNo;
   String?pass;
   String?type;
 
-  UserModel({
+  ShopModel({
     this.name,
     this.email,
     this.pass,
@@ -25,10 +26,11 @@ class UserModel {
     this.wardNo,
     this.phone,
     this.location,
+    this.shopNo
   });
 
-  factory UserModel.fromMap(Map<String, dynamic> map){
-    return UserModel(
+  factory ShopModel.fromMap(Map<String, dynamic> map){
+    return ShopModel(
         name : map['name'],
         email : map['email'],
         uid : map['uid'],
@@ -38,8 +40,9 @@ class UserModel {
         wardNo : map['wardNo'],
         phone : map['phone'],
         location : map['location'],
-      pass: map['pass'],
-      type: map['type']
+        pass: map['pass'],
+        type: map['type'],
+        shopNo: map['shopno']
     );
   }
 

@@ -1,59 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hksena/features/user/view/homepage.dart';
 
-class Payment_success extends StatefulWidget {
-  const Payment_success({super.key});
+class PaymentSuccess extends StatefulWidget {
+  const PaymentSuccess({Key? key});
 
   @override
-  State<Payment_success> createState() => _Payment_successState();
+  State<PaymentSuccess> createState() => _PaymentSuccessState();
 }
 
-class _Payment_successState extends State<Payment_success> {
+class _PaymentSuccessState extends State<PaymentSuccess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assests/images/successful_payment.png",height: 100,),
-            Text("Congrats!",style: TextStyle(
-                fontSize: 30,
-              fontWeight: FontWeight.bold
-            ),),
-            Text("Successfully Booked your Collector",style: TextStyle(
-                fontSize: 18
-            ),),
-            SizedBox(height: 20,),
-            Text("You have earned ",style: TextStyle(
-                fontSize: 18
-            ),),
-            Text("100 Points",style: TextStyle(
-                fontSize: 30
-            ),),
-            SizedBox(height: 20,),
-            InkWell(
-              onTap: (){
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePage()), (route) => false);
-              },
-              child: Container(
-                height: 50,
-                width: 300,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                    color: Color(0xff006937),
+      appBar: AppBar(
+        title: Text("Payment History"),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('payments')
+            .where('userid', isEqualTo: "pOBFnJ6wjOcT96TaCAjdmKjzQ")
+            .orderBy('createdat', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text("No transactions found"));
+          }
+          return ListView(
+            children: snapshot.data!.docs.map((doc) {
+              // Extracting data from each payment document
+              var amount = doc['amount'];
+              var bookingId = doc['bookingid'];
+              var createdAt = doc['createdat'];
+              var orderId = doc['orderId'];
+              var paymentId = doc['paymentid'];
+              var paymentTitle = doc['paymenttitle'];
+              var settlementStatus = doc['settlementStatus'];
+              var status = doc['status'];
+
+              // Creating a ListTile for each transaction
+              return ListTile(
+                title: Text("Payment Title: $paymentTitle"),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Amount: $amount"),
+                    Text("Order ID: $orderId"),
+                    Text("Booking ID: $bookingId"),
+                    Text("Payment ID: $paymentId"),
+                    Text("Created At: $createdAt"),
+                    Text("Settlement Status: $settlementStatus"),
+                    Text("Status: $status"),
+                  ],
                 ),
-                child: Center(
-                  child: Text("Back to Home",style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18
-                  ),),
-                ),
-              ),
-            )
-          ],
-        ),
+              );
+            }).toList(),
+          );
+        },
       ),
     );
   }

@@ -1,34 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hksena/core/login.dart';
-import 'package:hksena/features/user/view/message.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class My_acount extends StatefulWidget {
-  const My_acount({super.key});
+import '../../agents/view/message.dart';
+
+class MyAccount extends StatefulWidget {
+  const MyAccount({Key? key});
 
   @override
-  State<My_acount> createState() => _My_acountState();
-
+  State<MyAccount> createState() => _MyAccountState();
 }
 
-class _My_acountState extends State<My_acount> {
+class _AccountDetails {
+  final String name;
+  final String address;
+  final int points;
+  final String?location;
+  final String?email;String?phone;
+  final String?ward;
+
+  _AccountDetails({required this.name, required this.address, required this.points,this.location,this.phone,this.ward,this.email,});
+}
+
+class _MyAccountState extends State<MyAccount> {
+  late _AccountDetails _accountDetails = _AccountDetails(name: "", address: "", points: 0,location:"",phone: "",ward: "",email:"");
+  late int _walletPoints=0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAccountDetails();
+    fetchWalletPoints();
+  }
+
+  Future<void> fetchAccountDetails() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String uid = prefs.getString('uid') ?? "";
+
+      final DocumentSnapshot houseSnapshot = await FirebaseFirestore.instance.collection('houses').doc(uid).get();
+      final houseData = houseSnapshot.data() as Map<String, dynamic>;
+
+      final String name = houseData['name'] ?? "";
+      final String address = houseData['address'] ?? "";
+      final String email = houseData['email'] ?? "";
+      final String phone = houseData['phone'] ?? "";
+      final String location = houseData['location'] ?? "";
+      final String ward = houseData['wardNo'] ?? "";
+
+      final accountDetails = _AccountDetails(name: name, address: address, points: 0,location:location,phone: phone,ward: ward,email: email);
+      setState(() {
+        _accountDetails = accountDetails;
+      });
+    } catch (error) {
+      print("Error fetching account details: $error");
+    }
+  }
+
+  Future<void> fetchWalletPoints() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String uid = prefs.getString('uid') ?? "";
+
+      final DocumentSnapshot walletSnapshot = await FirebaseFirestore.instance.collection('wallet').doc(uid).get();
+      final walletData = walletSnapshot.data() as Map<String, dynamic>;
+
+      final int points = walletData['points'] ?? 0;
+
+      setState(() {
+        _walletPoints = points;
+      });
+    } catch (error) {
+      print("Error fetching wallet points: $error");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xff006937),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                "assests/images/logo1.png",
-                height: 50,
-              ),
-            ],
-          ),
+      appBar: AppBar(
+        backgroundColor: Color(0xff006937),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(width: 5),
+            Image.asset(
+              "assests/images/logo1.png",
+              height: 50,
+            ),
+          ],
         ),
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -44,14 +108,23 @@ class _My_acountState extends State<My_acount> {
                   Text(
                     "My Locality",
                     style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        letterSpacing: 1),
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      letterSpacing: 1,
+                    ),
                   ),
-                  SizedBox(
-                    height: 50,
+
+                  Text(
+                    _accountDetails != null ? "Ward ${_accountDetails.ward!}" : "Loading...",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      letterSpacing: 1,
+                    ),
                   ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -59,13 +132,11 @@ class _My_acountState extends State<My_acount> {
                         "assests/images/adress.png",
                         height: 35,
                       ),
-                      SizedBox(
-                        width: 20,
-                      ),
+                      SizedBox(width: 20),
                       Text(
-                        "New York, north street \n house no:3221 ",
+                        _accountDetails != null ? _accountDetails.address : "Loading...",
                         style: TextStyle(fontSize: 15, color: Colors.white),
-                      )
+                      ),
                     ],
                   ),
                 ],
@@ -73,87 +144,69 @@ class _My_acountState extends State<My_acount> {
             ),
             Positioned(
               top: 200,
-              bottom: 70, // Adjusted position
+              bottom: 70,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(top: 20, right: 30, left: 30),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(50),
-                        topRight: Radius.circular(50))),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                ),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
                         children: [
-                          SizedBox(
-                            height: 20,
-                          ),
+                          SizedBox(height: 20),
                           Text(
                             "My Account",
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.w500),
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(
-                            height: 30,
-                          ),
+                          SizedBox(height: 30),
                           Center(
-                            child: Row(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Image.asset(
                                   "assests/images/default_profie.png",
                                   height: 100,
                                 ),
-                                SizedBox(
-                                  width: 20,
+                                SizedBox(width: 20),
+                                Text(
+                                  _accountDetails != null ? _accountDetails.name : "Loading...",
+                                  style: TextStyle(fontSize: 20, color: Colors.black),
                                 ),
                                 Text(
-                                  "Shamil Rahman PK",
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.black),
-                                )
+                                  "My Points: ${_walletPoints ?? 'Loading...'}",
+                                  style: TextStyle(fontSize: 20, color: Colors.black),
+                                ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 80,
-                              ),
-                              Text(
-                                "My Points:400",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.black),
-                              )
-                            ],
-                          ),
+                          SizedBox(height: 20),
+
                         ],
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
+                      SizedBox(height: 40),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Cards"),
-                          SizedBox(
-                            height: 40,
+                          Text("Email"),
+                          Text(
+                            _accountDetails != null ? _accountDetails.email! : "Loading...",
+                            style: TextStyle(fontSize: 20, color: Colors.black),
                           ),
-                          Text("My Points"),
-                          SizedBox(
-                            height: 40,
+                          Text("Phone"),
+                          SizedBox(height: 10),
+                          Text(
+                            _accountDetails != null ? _accountDetails.phone! : "Loading...",
+                            style: TextStyle(fontSize: 20, color: Colors.black),
                           ),
-                          Text("Edit Account"),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          SizedBox(height: 20),
                         ],
                       ),
                     ],
@@ -186,10 +239,12 @@ class _My_acountState extends State<My_acount> {
                                   ),
                                   TextButton(
                                     child: Text("Logout"),
-                                    onPressed: () {
-                                      // Perform logout operation
+                                    onPressed: () async {
                                       final route = MaterialPageRoute(builder: (context) => Login());
-                                      Navigator.pushAndRemoveUntil(context, route, (route) => false);
+                                      SharedPreferences _pref = await SharedPreferences.getInstance();
+                                      _pref.clear();
+                                      await FirebaseAuth.instance.signOut().then((value) => Navigator.pushAndRemoveUntil(context, route, (route) => false));
+                                      // Perform logout operation
                                     },
                                   ),
                                 ],
@@ -203,10 +258,7 @@ class _My_acountState extends State<My_acount> {
                           child: Center(
                             child: Text(
                               "Log Out",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  letterSpacing: 2,
-                                  color: Colors.white),
+                              style: TextStyle(fontSize: 18, letterSpacing: 2, color: Colors.white),
                             ),
                           ),
                         ),
@@ -215,7 +267,9 @@ class _My_acountState extends State<My_acount> {
                     Expanded(
                       flex: 2,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Message()));
+                        },
                         child: Container(
                           alignment: Alignment.center,
                           height: 70,
@@ -225,20 +279,17 @@ class _My_acountState extends State<My_acount> {
                             children: [
                               Text(
                                 "Message",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    letterSpacing: 2,
-                                    color: Colors.white),
+                                style: TextStyle(fontSize: 18, letterSpacing: 2, color: Colors.white),
                               ),
                             ],
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
