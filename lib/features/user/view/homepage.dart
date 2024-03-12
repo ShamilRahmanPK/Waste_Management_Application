@@ -43,9 +43,9 @@ class _HomePageState extends State<HomePage> {
             ),
             // ${widget.data!['name']}
             Text(
-              "Good Morning,${widget.data!['name']}!",
+              "Good Morning,!",
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
-        width: 800,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assests/images/waste_managment.png"),

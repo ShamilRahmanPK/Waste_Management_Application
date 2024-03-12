@@ -27,57 +27,59 @@ class _FeedbacksState extends State<Feedbacks> {
       ),
       body: const Padding(
         padding: EdgeInsets.only(top: 10,right: 20,left: 20),
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 15,),
-                Text("Title",style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500
-                ),),
-                SizedBox(height: 15,),
-                TextField(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.black12,
-                    hintText: "Write feedback title",
-                    labelStyle: TextStyle(
-                      fontSize: 18,
-                    ),
-                    border: InputBorder.none
-                  ),
-                ),
-                SizedBox(height: 15,),
-                Text("Comment",style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500
-                ),),
-                SizedBox(height: 15,),
-                TextField(
-                  maxLines: 10,
-                  decoration: InputDecoration(
-                    // contentPadding: EdgeInsets.all(50),
-                    filled: true,
-                    fillColor: Colors.black12,
-                    hintText: "Write your comment",
-                    labelStyle: TextStyle(
-                      fontSize: 18,
-                    ),
-                    border: InputBorder.none
-                  ),
-                ),
-                SizedBox(height: 15,),
-                Text("Upload image (Optional)",style: TextStyle(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 15,),
+                  Text("Title",style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500
-                ),),
-                SizedBox(height: 15,),
-                Icon(Icons.add_a_photo,size:80,),
-              ],
-            )
-          ],
+                  ),),
+                  SizedBox(height: 15,),
+                  TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.black12,
+                      hintText: "Write feedback title",
+                      labelStyle: TextStyle(
+                        fontSize: 18,
+                      ),
+                      border: InputBorder.none
+                    ),
+                  ),
+                  SizedBox(height: 15,),
+                  Text("Comment",style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500
+                  ),),
+                  SizedBox(height: 15,),
+                  TextField(
+                    maxLines: 10,
+                    decoration: InputDecoration(
+                      // contentPadding: EdgeInsets.all(50),
+                      filled: true,
+                      fillColor: Colors.black12,
+                      hintText: "Write your comment",
+                      labelStyle: TextStyle(
+                        fontSize: 18,
+                      ),
+                      border: InputBorder.none
+                    ),
+                  ),
+                  SizedBox(height: 15,),
+                  Text("Upload image (Optional)",style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500
+                  ),),
+                  SizedBox(height: 15,),
+                  Icon(Icons.add_a_photo,size:80,),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

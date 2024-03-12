@@ -201,7 +201,6 @@ class _Add_binState extends State<Add_bin> {
                         },
                       ),
                     ),
-                        Container(height: 150,)
                       ],
                     ),
                   )),

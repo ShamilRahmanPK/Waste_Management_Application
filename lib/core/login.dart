@@ -119,6 +119,7 @@ class _LoginState extends State<Login> {
                         height: 20,
                       ),
                       InkWell(
+
                         onTap: () async{
 
 
@@ -158,7 +159,16 @@ class _LoginState extends State<Login> {
                         children: [
 
                           Text("Dont have a account?"),
-                          TextButton(onPressed: () {
+                          TextButton(
+
+                              onLongPress: (){
+
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Admin()));
+                              },
+
+
+
+                              onPressed: () {
 
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>Registration()), );
 

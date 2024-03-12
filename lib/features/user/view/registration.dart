@@ -383,6 +383,7 @@ class _RegistrationState extends State<Registration> {
            {
 
              'name':_nameController.text,
+             'user_name':_userName.text,
              'email':user.user!.email,
              'uid':user.user!.uid,
              'createdat':DateTime.now(),

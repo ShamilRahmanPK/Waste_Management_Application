@@ -20,11 +20,7 @@ var bins=[
     "img": "assests/images/yellowbin.png",
     "details": "items that are organic like food items,\n soiled food wrappers,hygiene products, \n yard waste, tissues and paper towels, as\n well as anyother soiled items that would\n contaminate the recyclables.",
     "price": 85,
-  },{
-    "title": "",
-    "img": "",
-    "details": "",
-  },
+  }
 ];
 
 
