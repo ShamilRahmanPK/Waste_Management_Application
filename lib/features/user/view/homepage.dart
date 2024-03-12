@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => User_payments()));
+                                  builder: (context) => UserPayments()));
                         },
                         child: Container(
                           height: 100,
@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => My_acount()));
+                                  builder: (context) => MyAccount()));
                         },
                         child: Container(
                           height: 100,
@@ -351,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Agents()));
+                                  builder: (context) => My_agent()));
                         },
                         child: Container(
                           height: 100,
